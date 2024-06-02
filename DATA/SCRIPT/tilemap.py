@@ -1,4 +1,11 @@
 
+# -1 0 1 → (x, y)
+NEIGHBOR_OFFSET = []
+for i in [-1, 0, 1]:
+    for j in [1, 0, -1]:
+        NEIGHBOR_OFFSET.append((i,j))
+# NEIGHBOR_OFFSET = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (0, 0), (-1, 1), (0, 1), (1, 1)]
+
 class Tile_map:
     def __init__(self, game, tile_size=16):
         self.game = game
