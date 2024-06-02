@@ -3,8 +3,8 @@ import pygame
 import sys
 
 # imports self library:
-import utility as _ut
-import entities as _en
+import DATA.SCRIPT.utility as _ut
+import DATA.SCRIPT.entities as _en
 
 class Game:
     def __init__(self) -> None:
