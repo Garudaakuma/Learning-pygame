@@ -35,6 +35,8 @@ class Game:
         
         self.tile_map = _ti.Tile_map(self, tile_size=16)
         
+        
+        
     def run(self):
         print("main.py - inicializado!")
         while True:
@@ -42,7 +44,7 @@ class Game:
             
             self.tile_map.render(self.display)
             
-            self.player.update((self.movement[1] - self.movement[0], 0))
+            self.player.update(self.tile_map, (self.movement[1] - self.movement[0], 0))
             self.player.render(self.display)
             
             for event in pygame.event.get():
