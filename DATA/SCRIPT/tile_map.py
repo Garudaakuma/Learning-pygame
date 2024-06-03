@@ -14,7 +14,7 @@ class tile_map:
 
         for i in range(10):
             self.tile_map[str(3 + i) + ';10'] = {'type': 'grass', 'variant': 1, 'pos': (3 + i, 10)}
-            self.tile_map['10;' + str(3 + i)] = {'type': 'stone', 'variant': 1, 'pos': (10, 5 + i)}
+            self.tile_map['10;' + str(3 + i)] = {'type': 'stone', 'variant': 1, 'pos': (10, 3 + i)}
 
     def tiles_around(self, pos):
         tiles = []
