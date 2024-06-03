@@ -4,6 +4,7 @@ import pygame
 # imports self library:
 import DATA.SCRIPT.main as _ma
 
+
 class PhysicsEntity:
     def __init__(self, game, e_type, pos, size):
         self.game = game
@@ -12,9 +13,8 @@ class PhysicsEntity:
         self.size = size
         self.velocity = [0, 0]
         self.collisions = {'up': False, 'down': False, 'right': False, 'left': False}
-        
-    def rect(self):
-        return pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
+
+        self.rect = lambda: pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
     
     def update(self, tile_map, movement=(0, 0)):
         self.collisions = {'up': False, 'down': False, 'right': False, 'left': False} # reset collisions

@@ -5,7 +5,8 @@ import sys
 # imports self library:
 import DATA.SCRIPT.utility as _ut
 import DATA.SCRIPT.entities as _en
-import DATA.SCRIPT.tilemap as _ti
+import DATA.SCRIPT.tile_map as _ti
+
 
 class Game:
     def __init__(self) -> None:
@@ -33,9 +34,9 @@ class Game:
         
         self.player = _en.PhysicsEntity(self, 'player', (50, 50), (8, 15))
         
-        self.tile_map = _ti.Tile_map(self, tile_size=16)
+        self.tile_map = _ti.tile_map(self, tile_size=16)
         
-        
+        ...
         
     def run(self):
         print("main.py - inicializado!")
