@@ -13,8 +13,24 @@ class tile_map:
         self.offgrid_tiles = []
 
         for i in range(10):
-            self.tile_map[str(3 + i) + ';10'] = {'type': 'grass', 'variant': 1, 'pos': (3 + i, 10)}
-            self.tile_map['10;' + str(3 + i)] = {'type': 'stone', 'variant': 1, 'pos': (10, 3 + i)}
+            if i == 0:
+                self.tile_map[f"{3 + i};10"] = {'type': 'grass', 'variant': 0, 'pos': (3 + i, 10)}
+                
+                self.tile_map[f"12;{8 + i}"] = {'type': 'stone', 'variant': 0, 'pos': (12, 8 + i)}
+                self.tile_map[f"13;{8 + i}"] = {'type': 'stone', 'variant': 1, 'pos': (13, 8 + i)}
+                self.tile_map[f"14;{8 + i}"] = {'type': 'stone', 'variant': 2, 'pos': (14, 8 + i)}
+            elif i == 9:
+                self.tile_map[str(3 + i) + ';10'] = {'type': 'grass', 'variant': 2, 'pos': (3 + i, 10)}
+                
+                self.tile_map[f"12;{8 + i}"] = {'type': 'stone', 'variant': 6, 'pos': (12, 8 + i)}
+                self.tile_map[f"13;{8 + i}"] = {'type': 'stone', 'variant': 5, 'pos': (13, 8 + i)}
+                self.tile_map[f"14;{8 + i}"] = {'type': 'stone', 'variant': 4, 'pos': (14, 8 + i)}
+            else:
+                self.tile_map[str(3 + i) + ';10'] = {'type': 'grass', 'variant': 1, 'pos': (3 + i, 10)}
+                
+                self.tile_map[f"12;{8 + i}"] = {'type': 'stone', 'variant': 3, 'pos': (12, 8 + i)} 
+                self.tile_map[f"13;{8 + i}"] = {'type': 'stone', 'variant': 8, 'pos': (13, 8 + i)} 
+                self.tile_map[f"14;{8 + i}"] = {'type': 'stone', 'variant': 7, 'pos': (14, 8 + i)}
 
     def tiles_around(self, pos):
         tiles = []
