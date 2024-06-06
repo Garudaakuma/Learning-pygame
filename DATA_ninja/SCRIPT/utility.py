@@ -2,7 +2,7 @@
 import pygame
 import os
 
-BASE_IMG_PATH = 'DATA/IMAGES/'
+BASE_IMG_PATH = 'DATA_ninja/IMAGES/'
 
 
 def load_image(path:str):

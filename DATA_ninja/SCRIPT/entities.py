@@ -2,7 +2,7 @@
 import pygame
 
 # imports self library:
-import DATA.SCRIPT.main as _ma
+import DATA_ninja.SCRIPT.main as _ma
 
 
 class PhysicsEntity:

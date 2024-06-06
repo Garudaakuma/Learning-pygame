@@ -2,7 +2,7 @@
 import pygame
 
 NEIGHBOR_OFFSET = [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (0, 0), (-1, 1), (0, 1), (1, 1)]
-PHYSICS_TILES = {'grass', 'stone'}
+PHYSICS_TILES = {'stone', 'grass'}
 
 
 class tile_map:
@@ -12,25 +12,26 @@ class tile_map:
         self.tile_map = {}
         self.offgrid_tiles = []
 
+        def create_map(i:int,x_index:int,fix_xindex:bool,y_index:int,fix_yindex:bool,type_:str,varient:int):
+            x_index = x_index if fix_xindex else x_index + i
+            y_index = y_index if fix_yindex else y_index + i
+            
+            self.tile_map[f"{x_index};{y_index}"] = {'type': type_,'variant': varient,'pos': (x_index,y_index)}
         for i in range(10):
             if i == 0:
+                for j in range(3): create_map(i,12 + j,True,2,False,'stone',j)
+                
                 self.tile_map[f"{3 + i};10"] = {'type': 'grass', 'variant': 0, 'pos': (3 + i, 10)}
-                
-                self.tile_map[f"12;{8 + i}"] = {'type': 'stone', 'variant': 0, 'pos': (12, 8 + i)}
-                self.tile_map[f"13;{8 + i}"] = {'type': 'stone', 'variant': 1, 'pos': (13, 8 + i)}
-                self.tile_map[f"14;{8 + i}"] = {'type': 'stone', 'variant': 2, 'pos': (14, 8 + i)}
             elif i == 9:
+                for j in range(3): create_map(i,12 + j,True,2,False,'stone',6 - j)
+                
                 self.tile_map[str(3 + i) + ';10'] = {'type': 'grass', 'variant': 2, 'pos': (3 + i, 10)}
-                
-                self.tile_map[f"12;{8 + i}"] = {'type': 'stone', 'variant': 6, 'pos': (12, 8 + i)}
-                self.tile_map[f"13;{8 + i}"] = {'type': 'stone', 'variant': 5, 'pos': (13, 8 + i)}
-                self.tile_map[f"14;{8 + i}"] = {'type': 'stone', 'variant': 4, 'pos': (14, 8 + i)}
             else:
-                self.tile_map[str(3 + i) + ';10'] = {'type': 'grass', 'variant': 1, 'pos': (3 + i, 10)}
+                create_map(i,12,True,2,False,'stone',7)
+                create_map(i,13,True,2,False,'stone',8)
+                create_map(i,14,True,2,False,'stone',3)
                 
-                self.tile_map[f"12;{8 + i}"] = {'type': 'stone', 'variant': 3, 'pos': (12, 8 + i)} 
-                self.tile_map[f"13;{8 + i}"] = {'type': 'stone', 'variant': 8, 'pos': (13, 8 + i)} 
-                self.tile_map[f"14;{8 + i}"] = {'type': 'stone', 'variant': 7, 'pos': (14, 8 + i)}
+                self.tile_map[str(3 + i) + ';10'] = {'type': 'grass', 'variant': 1, 'pos': (3 + i, 10)}
 
     def tiles_around(self, pos):
         tiles = []

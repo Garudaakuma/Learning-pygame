@@ -3,9 +3,9 @@ import pygame
 import sys
 
 # imports self library:
-import DATA.SCRIPT.utility as _ut
-import DATA.SCRIPT.entities as _en
-import DATA.SCRIPT.tile_map as _ti
+import DATA_ninja.SCRIPT.utility as _ut
+import DATA_ninja.SCRIPT.entities as _en
+import DATA_ninja.SCRIPT.tile_map as _ti
 
 
 class Game:
