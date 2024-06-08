@@ -6,19 +6,20 @@ import pygame as pyg, sys, time
 
 class Game():
     def __init__(self) -> None:
-        pyg.init()
         
-        self.RESOLUTION = (1270, 720)
+        self.RESOLUTION = (800, 400)
         self.BACKGROUND_COLOR = '#000000'
         self.FPS = 60
         
-        pyg.display.set_caption('Stay alive!')
+        pyg.init()
+        pyg.display.set_caption('RUN! RUN! RUN!')
         self.screen = pyg.display.set_mode(self.RESOLUTION, )
         self.display = pyg.Surface((self.screen.get_width()/2, self.screen.get_height()/2))
         
+        self.clock = pyg.time.Clock()   # create clock
+        self.last_time = time.time()    # gets time
         
-        self.clock = pyg.time.Clock()
-        self.last_time = time.time()
+        ...
         
     def run(self):
         while True:
@@ -28,6 +29,7 @@ class Game():
             
             self.display.fill(self.BACKGROUND_COLOR)
             
+            # render
             ...
             
             for event in pyg.event.get():
