@@ -20,35 +20,39 @@ class Game():
         self.pos_circle = pyg_.Vector2(self.surface.get_width() / 2, self.surface.get_height() / 2)
         self.pos_y = [True, False]
         self.pos_x = [True, False]
+        self.speed = 1
         
     def up_down(self):
-        speed = 1
         
         # y
         if self.pos_y[0]:
-            self.pos_circle.y += speed
+            self.pos_circle.y += self.speed
             if self.pos_circle.y >= self.surface.get_height() - 15:
                 self.pos_y[0] = False
                 self.pos_y[1] = True
+                self.speed += 1
         if self.pos_y[1]:
-            self.pos_circle.y -= speed
+            self.pos_circle.y -= self.speed
             if self.pos_circle.y <= 15:
                 self.pos_y[0] = True
                 self.pos_y[1] = False
+                self.speed += 1
         
         # x
         if self.pos_x[0]:
-            self.pos_circle.x += speed
+            self.pos_circle.x += self.speed
             if self.pos_circle.x >= self.surface.get_width() - 15:
                 self.pos_x[0] = False
                 self.pos_x[1] = True
+                self.speed += 1
         if self.pos_x[1]:
-            self.pos_circle.x -= speed
+            self.pos_circle.x -= self.speed
             if self.pos_circle.x <= 15:
                 self.pos_x[0] = True
                 self.pos_x[1] = False
+                self.speed += 1
         
-        print(f'x:{self.pos_circle.x:>5}, y:{self.pos_circle.y:>5}')
+        print(f'x:{self.pos_circle.x:>7}, y:{self.pos_circle.y:>7} || speed:{self.speed:>4}')
         
     def run(self):
         print("Game running!")
