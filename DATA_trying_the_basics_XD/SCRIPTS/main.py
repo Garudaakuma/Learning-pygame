@@ -18,50 +18,54 @@ class Game():
         self.FPS = 120
         
         self.pos_circle = pyg_.Vector2(self.surface.get_width() / 2, self.surface.get_height() / 2)
-        self.pos_y = [True, False]
-        self.pos_x = [True, False]
-        self.speed = 1
+        self.pos_y_c, self.pos_x_c = [True, False], [True, False]
         
-    def up_down(self):
+        self.pos_poly1 = pyg_.Vector2(self.surface.get_width() / 2, self.surface.get_height() / 2)
+        self.pos_x_1, self.pos_y_1 = [True, False], [True, False]
+        self.pos_poly2 = pyg_.Vector2(self.surface.get_width() / 2, (self.surface.get_height() / 2) + 25)
+        self.pos_x_2, self.pos_y_2 = [True, False], [True, False]
         
+    def up_down(self, vector, pos_x, pos_y, speed=1):
         # y
-        if self.pos_y[0]:
-            self.pos_circle.y += self.speed
-            if self.pos_circle.y >= self.surface.get_height() - 15:
-                self.pos_y[0] = False
-                self.pos_y[1] = True
-                self.speed += 1
-        if self.pos_y[1]:
-            self.pos_circle.y -= self.speed
-            if self.pos_circle.y <= 15:
-                self.pos_y[0] = True
-                self.pos_y[1] = False
-                self.speed += 1
+        if pos_y[0]:
+            vector.y += speed
+            if vector.y >= self.surface.get_height():
+                pos_y[0] = False
+                pos_y[1] = True
+                #speed += 1
+        if pos_y[1]:
+            vector.y -= speed
+            if vector.y <= 0:
+                pos_y[0] = True
+                pos_y[1] = False
+                #speed += 1
         
         # x
-        if self.pos_x[0]:
-            self.pos_circle.x += self.speed
-            if self.pos_circle.x >= self.surface.get_width() - 15:
-                self.pos_x[0] = False
-                self.pos_x[1] = True
-                self.speed += 1
-        if self.pos_x[1]:
-            self.pos_circle.x -= self.speed
-            if self.pos_circle.x <= 15:
-                self.pos_x[0] = True
-                self.pos_x[1] = False
-                self.speed += 1
-        
-        print(f'x:{self.pos_circle.x:>7}, y:{self.pos_circle.y:>7} || speed:{self.speed:>4}')
+        if pos_x[0]:
+            vector.x += speed
+            if vector.x >= self.surface.get_width():
+                pos_x[0] = False
+                pos_x[1] = True
+                #speed += 1
+        if pos_x[1]:
+            vector.x -= speed
+            if vector.x <= 0:
+                pos_x[0] = True
+                pos_x[1] = False
+                #speed += 1
+                
         
     def run(self):
         print("Game running!")
         while True:
             self.surface.fill(self.background_color)
             
-            pyg_.draw.circle(self.surface, '#0000d5', self.pos_circle, 15)
+            pyg_.draw.polygon(self.surface, '#0000d5', [(self.pos_poly1.x, self.pos_poly1.y), (self.pos_poly2.x, self.pos_poly2.y)], 25)
+            self.up_down(self.pos_poly1, self.pos_x_1, self.pos_y_1)
+            self.up_down(self.pos_poly2, self.pos_x_2, self.pos_y_2)
             
-            self.up_down()
+            pyg_.draw.circle(self.surface, '#00d500', self.pos_circle, 15)
+            self.up_down(self.pos_circle, self.pos_x_c, self.pos_y_c)
             
             for event in pyg_.event.get():
                 if event.type == pyg_.QUIT:
