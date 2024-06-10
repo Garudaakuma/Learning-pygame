@@ -16,14 +16,19 @@ class utility():
         self.display = display
     def image_load(self, folder: str, file_name: str) -> pyg.Surface:
         return pyg.image.load(self.PATH[folder]+file_name).convert()
+    
     def get_rect(self, surface: pyg.Surface, vector2: pyg.Vector2) -> pyg.Rect:
-        return surface.get_rect(midbottom=(vector2))
+        return surface.get_rect(midbottom = (vector2))
+    
+    def font_rect(self, surface: pyg.Surface, pos: float):
+        return surface.get_rect(center = pos)
 
  
 class transition_image():
-    def __init__(self, display) -> None:
-        self.fade_alpha = 255
-        self.fade_surface = pyg.Surface((self.display.get_width(), self.display.get_height())).convert()
+    def __init__(self, display: pyg.Surface) -> None:
+        self.display = display
+        self.fade_alpha = 0
+        self.fade_surface = pyg.Surface((display.get_width(), display.get_height())).convert()
         self.fade_surface.fill('#1b1d1e')
         self.fade_surface.set_alpha(self.fade_alpha)
   
@@ -37,3 +42,14 @@ class transition_image():
         self.fade_surface.set_alpha(self.fade_alpha)
         self.display.blit(self.fade_surface, (0,0))
 
+class text_fonts():
+    def __init__(self, display: pyg.Surface, font_ttf: str, size: int, pos: pyg.Vector2, text: str, antialias: bool, color: str):
+        self.display = display
+        
+        self.font_obj = pyg.font.Font(utility(display).PATH['FONTS']+font_ttf, size)
+        self.font_surface = self.font_obj.render(text, antialias, color).convert()
+        self.font_pos = pos
+        self.font_rect = self.font_surface.get_rect(center = self.font_pos)
+        
+    def draw_rect(self, color: str, size:int):
+        return pyg.draw.rect(self.display, color, self.font_rect, border_radius=size)
