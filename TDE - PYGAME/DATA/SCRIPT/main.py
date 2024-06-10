@@ -1,17 +1,13 @@
+
 # imports labrary
 import pygame as pyg, sys, time
 
 # imports self library
-...
+import DATA.SCRIPT.utilities as util_
+import DATA.SCRIPT.entitys as enti_
 
 class Game():
     def __init__(self) -> None:
-        self.PATH = {
-            'PATH': 'TDE - PYGAME/DATA/',
-            'AUDIOS': 'TDE - PYGAME/DATA/AUDIOS/',
-            'FONTS': 'TDE - PYGAME/DATA/FONTS/',
-            'IMAGE': 'TDE - PYGAME/DATA/IMAGE/',
-        }
         self.RESOLUTION = (1600, 800) # in display = (x: 800, y: 400)
         self.BACKGROUND_COLOR = '#fd971f'
         self.FPS = 60
@@ -22,15 +18,17 @@ class Game():
         }
 
         pyg.init()
-        pyg.display.set_caption('RUN! RUN! RUN!')
+        pyg.display.set_caption('CapyRun')
         self.screen = pyg.display.set_mode(self.RESOLUTION, )
         self.display = pyg.Surface((self.screen.get_width()/2, self.screen.get_height()/2)).convert()
 
         self.clock = pyg.time.Clock()   # create clock
         self.last_time = time.time()    # gets time
-
-        self.sky_surface = pyg.image.load(self.PATH['IMAGE']+'sky_background.png').convert()
-        self.ground_surface = pyg.image.load(self.PATH['IMAGE']+'floor_grass.png').convert()
+        
+        self.util = util_.utility(self.display)
+        
+        self.sky_surface = self.util.image_load('IMAGE','sky_background.png')
+        self.ground_surface = self.util.image_load('IMAGE','floor_grass.png')
 
         self.fade_alpha = 255
         self.fade_surface = pyg.Surface((self.display.get_width(),self.display.get_height())).convert()
@@ -39,10 +37,8 @@ class Game():
 
         self.score = 0
 
-        self.snail_enmy = pyg.image.load(self.PATH['IMAGE']+'ENEMYS/snail.png').convert()
-        self.snail_pos = pyg.Vector2(self.display.get_width()+32,self.display.get_height()-32)
-        self.snail_rect = self.snail_enmy.get_rect(midbottom = (self.snail_pos))
-
+        self.snail_obj = enti_.enemy(self.display, 'snail')
+        
         self.player_surface = pyg.image.load(self.PATH['IMAGE']+'PLAYER/player_standing.png').convert()
         self.player_pos = pyg.Vector2(32, self.display.get_height()-32)
         self.player_rect = self.player_surface.get_rect(midbottom = (self.player_pos))
@@ -72,9 +68,7 @@ class Game():
                 self.display.blit(score_surface, score_rect)
                 
                 # snail walking
-                self.display.blit(self.snail_enmy, self.snail_rect)
-                self.snail_rect.x -= 1 * dt # calling snail x position and subtracting
-                if self.snail_rect.right < -32: self.snail_rect.x = self.display.get_width()+32
+                self.snail_obj.enemy_walk(1,dt)
                 
                 # player
                 self.display.blit(self.player_surface, self.player_rect)
@@ -95,8 +89,8 @@ class Game():
                     self.fade_surface.set_alpha(self.fade_alpha)
                     self.display.blit(self.fade_surface, (0,0))
                 
-                if self.snail_rect.colliderect(self.player_rect):
-                    self.fade_alpha += 25
+                if self.snail_obj.colligion_check(self.player_rect):
+                    self.fade_alpha += 45
                     self.fade_surface.set_alpha(self.fade_alpha)
                     self.display.blit(self.fade_surface, (0,0))
                     
