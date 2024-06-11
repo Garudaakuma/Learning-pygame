@@ -61,14 +61,14 @@ class Game():
                 fps_text = util_.text_fonts(self.display, 'ConsolaMono-book.ttf', 10, (0,0), f'fps: {self.clock.get_fps()*dt:.0f}', False, '#1b1d1e')
                 self.display.blit(fps_text.font_surface, fps_text.font_pos)
 
-                score_text = util_.text_fonts(self.display, 'Daydream.ttf', 20, (self.display.get_width()/2, self.display.get_height()/4), f'score: {self.score}', False, '#1b1d1e')
+                score_text = util_.text_fonts(self.display, 'Daydream.ttf', 20, (self.display.get_width()/2, self.display.get_height()/4), f'score: {self.score:.0F}', False, '#1b1d1e')
                 score_text.draw_rect('#f8f8f2', 5)
                 self.display.blit(score_text.font_surface, score_text.font_rect)
                 
-                self.score += 1
+                self.score += 0.1
                 
                 # snail walking
-                self.snail_obj.enemy_walk(1,dt)
+                self.snail_obj.walk_cicle(1,dt)
                 
                 # player
                 self.display.blit(self.player_obj.surface, self.player_obj.rect)
@@ -80,12 +80,11 @@ class Game():
                 if KEYS[pyg.K_a] or KEYS[pyg.K_LEFT]:
                     self.player_obj.rect.x -= 3 * dt
                 
-                if self.fade_obj.fade_alpha >= 0:
-                    self.fade_obj.fade_out(10, dt)
+                if self.fade_obj.fade_alpha >= 0: self.fade_obj.fade_out(10, dt)
                 
                 if self.snail_obj.colligion_check(self.player_obj.rect):
                     self.fade_obj.fade_in(45, dt)
-                    
+                    self.player_obj.gravity = 0
                     if self.fade_obj.fade_alpha >= 255:
                         self.game_state['Game_over'] = True
                         self.game_state['Game'] = False
@@ -99,17 +98,12 @@ class Game():
                 
                 text_option = util_.text_fonts(self.display, 'Daydream.ttf', 20, (self.display.get_width()/2, self.display.get_height()/2+40), 'RETRY', False, '#1b1d1e')
                 reset_button = util_.button_rect(self.display, (128, 32), (self.display.get_width()/2, self.display.get_height()/2+40), '#f92672', text_option)
-                # surface_option = pyg.Surface((128, 32)).convert()
-                # surface_option.fill("#f92672")
-                # mask_option = pyg.mask.from_surface(surface_option)
-                # rectancle_option = surface_option.get_rect(center=(self.display.get_width()/2, self.display.get_height()/2+40))
-                # self.display.blit(surface_option, rectancle_option)
-                # self.display.blit(text_option.font_surface, text_option.font_rect)
+                reset_button.render()
+
                 
-                if mask_option.overlap(self.mouse_obj.mask, (self.mouse_obj.pos[0] - rectancle_option.x, self.mouse_obj.pos[1] - rectancle_option.y)):
-                    surface_option.fill("#f8f8f2")
-                    self.display.blit(surface_option, rectancle_option)
-                    self.display.blit(text_option.font_surface, text_option.font_rect)
+                
+                if reset_button.mask.overlap(self.mouse_obj.mask, (self.mouse_obj.pos[0] - reset_button.rect.x, self.mouse_obj.pos[1] - reset_button.rect.y)):
+                    reset_button.check_collision(self.mouse_obj, '#f8f8f2')
                     if self.mouse_obj.clicked:
                         self.game_state['Game'] = True
                         self.game_state['Game_over'] = False
@@ -121,8 +115,7 @@ class Game():
                 
                 self.mouse_obj.render()
                 
-                if self.fade_obj.fade_alpha >= 0:
-                    self.fade_obj.fade_out(10, dt)
+                if self.fade_obj.fade_alpha >= 0: self.fade_obj.fade_out(10, dt)
             
             # check events in pygame
             for event in pyg.event.get():

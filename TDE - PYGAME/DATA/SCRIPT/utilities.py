@@ -87,6 +87,6 @@ class button_rect():
     
     def check_collision(self, m_obj: Mouse, color:str):
         self.surface.fill(self.color)
-        if self.mask.overlap(self.m_obj.mask, (m_obj.pos[0] - self.rect.x, m_obj.pos[1] - self.rect.y)):
+        if self.mask.overlap(m_obj.mask, (m_obj.pos[0] - self.rect.x, m_obj.pos[1] - self.rect.y)):
             self.surface.fill(color)
             self.render()

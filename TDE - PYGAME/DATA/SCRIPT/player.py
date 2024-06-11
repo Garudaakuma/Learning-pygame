@@ -12,6 +12,7 @@ class Player():
         self.surface = self.util.image_load('IMAGE','PLAYER/player_standing.png')
         self.pos = pyg.Vector2(32, self.display.get_height()-32)
         self.rect = self.util.get_rect(self.surface, self.pos)
+        #self.mask = pyg.mask.from_surface(self.surface)
         
         self.ground = True
         self.gravity = 0
