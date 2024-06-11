@@ -39,15 +39,24 @@ class Game():
         
         self.player_obj = play_.Player(self.display)
 
+        #! mouse config
+        self.pos_mouse = pyg.mouse.get_pos()
+        pyg.mouse.set_visible(False)
+        self.mouse_surface = pyg.image.load(self.util.PATH['IMAGE']+'cursor.png').convert()
+        self.mouse_mask = pyg.mask.from_surface(self.mouse_surface)
+        self.mouse_rect = self.mouse_surface.get_rect(center=(self.pos_mouse[0], self.pos_mouse[1]))
+        self.clicked = False
+        
     def run(self):
         while True:
             dt = time.time() - self.last_time   # delta time
             dt *= self.FPS                      # remain time/movement constant
             self.last_time = time.time()        # updates last time
-
-            pos_mouse = pyg.mouse.get_pos()
-            pyg.mouse.get_visible(False)
-            mouse_img - pyg.image.load(self.util.PATH['IMAGE']+'cursor.png').convert()
+            
+            #! mouse position update
+            self.pos_mouse = pyg.mouse.get_pos()
+            self.pos_mouse = (self.pos_mouse[0]/2, self.pos_mouse[1]/2) # convert to display coordinates
+            self.mouse_rect.center = (self.pos_mouse[0], self.pos_mouse[1])
             
             if self.game_state['Game']:
                 self.display.fill(self.BACKGROUND_COLOR)
@@ -94,9 +103,28 @@ class Game():
                 gameOver_text.draw_rect('#1b1d1e', 5)
                 self.display.blit(gameOver_text.font_surface, gameOver_text.font_rect)
                 
+                text_option = util_.text_fonts(self.display, 'Daydream.ttf', 20, (self.display.get_width()/2, self.display.get_height()/2+40), 'RETRY', False, '#1b1d1e')
+                surface_option = pyg.Surface((128, 32)).convert()
+                surface_option.fill("#f92672")
+                mask_option = pyg.mask.from_surface(surface_option)
+                rectancle_option = surface_option.get_rect(center=(self.display.get_width()/2, self.display.get_height()/2+40))
+                self.display.blit(surface_option, rectancle_option)
+                self.display.blit(text_option.font_surface, text_option.font_rect)
+                
+                if mask_option.overlap(self.mouse_mask, (self.pos_mouse[0] - rectancle_option.x, self.pos_mouse[1] - rectancle_option.y)):
+                    if self.clicked:
+                        self.game_state['Game'] = True
+                        self.game_state['Game_over'] = False
+                        self.score = 0
+                        #? self.snail_obj.reset()
+                        #? self.player_obj.reset()
+                        self.clicked = False
+                        continue
+                
                 if self.fade_obj.fade_alpha >= 0:
                     self.fade_obj.fade_out(10, dt)
             
+            # check events in pygame
             for event in pyg.event.get():
                 if event.type == pyg.QUIT: self.end()
                 if event.type == pyg.KEYDOWN:
@@ -109,7 +137,13 @@ class Game():
                     if self.player_obj.rect.collidepoint((event.pos[0]/2, event.pos[1]/2)):
                         self.player_obj.gravity = -12
                         self.player_obj.ground = False
+                if event.type == pyg.MOUSEBUTTONDOWN:
+                    self.clicked = True
             
+            #! mouse render
+            self.display.blit(self.mouse_surface, self.mouse_rect)
+            
+            # screen / clock / display || update
             self.screen.blit(pyg.transform.scale(self.display, self.screen.get_size()), (0, 0))
             self.clock.tick(self.FPS)
             pyg.display.update()
