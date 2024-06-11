@@ -68,6 +68,25 @@ class Mouse():
         self.pos = (self.pos[0]/2, self.pos[1]/2)
         self.rect.center = (self.pos[0], self.pos[1])
         
-    def render(self, gamestate):
-        if gamestate: self.display.blit(self.surface, self.rect)
-        
+    def render(self):
+        return self.display.blit(self.surface, self.rect)
+
+class button_rect():
+    def __init__(self, display: pyg.Surface, size: tuple, pos: tuple, color:str, text_obj: text_fonts):
+        self.display = display
+        self.text_obj = text_obj
+        self.surface = pyg.Surface(size).convert()
+        self.color = color
+        self.fill = self.surface.fill(color)
+        self.rect = self.surface.get_rect(center=pos)
+        self.mask = pyg.mask.from_surface(self.surface)
+    
+    def render(self):
+        self.display.blit(self.surface, self.rect)
+        self.display.blit(self.text_obj.font_surface, self.text_obj.font_rect)
+    
+    def check_collision(self, m_obj: Mouse, color:str):
+        self.surface.fill(self.color)
+        if self.mask.overlap(self.m_obj.mask, (m_obj.pos[0] - self.rect.x, m_obj.pos[1] - self.rect.y)):
+            self.surface.fill(color)
+            self.render()

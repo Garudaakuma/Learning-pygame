@@ -65,6 +65,8 @@ class Game():
                 score_text.draw_rect('#f8f8f2', 5)
                 self.display.blit(score_text.font_surface, score_text.font_rect)
                 
+                self.score += 1
+                
                 # snail walking
                 self.snail_obj.enemy_walk(1,dt)
                 
@@ -96,14 +98,18 @@ class Game():
                 self.display.blit(gameOver_text.font_surface, gameOver_text.font_rect)
                 
                 text_option = util_.text_fonts(self.display, 'Daydream.ttf', 20, (self.display.get_width()/2, self.display.get_height()/2+40), 'RETRY', False, '#1b1d1e')
-                surface_option = pyg.Surface((128, 32)).convert()
-                surface_option.fill("#f92672")
-                mask_option = pyg.mask.from_surface(surface_option)
-                rectancle_option = surface_option.get_rect(center=(self.display.get_width()/2, self.display.get_height()/2+40))
-                self.display.blit(surface_option, rectancle_option)
-                self.display.blit(text_option.font_surface, text_option.font_rect)
+                reset_button = util_.button_rect(self.display, (128, 32), (self.display.get_width()/2, self.display.get_height()/2+40), '#f92672', text_option)
+                # surface_option = pyg.Surface((128, 32)).convert()
+                # surface_option.fill("#f92672")
+                # mask_option = pyg.mask.from_surface(surface_option)
+                # rectancle_option = surface_option.get_rect(center=(self.display.get_width()/2, self.display.get_height()/2+40))
+                # self.display.blit(surface_option, rectancle_option)
+                # self.display.blit(text_option.font_surface, text_option.font_rect)
                 
                 if mask_option.overlap(self.mouse_obj.mask, (self.mouse_obj.pos[0] - rectancle_option.x, self.mouse_obj.pos[1] - rectancle_option.y)):
+                    surface_option.fill("#f8f8f2")
+                    self.display.blit(surface_option, rectancle_option)
+                    self.display.blit(text_option.font_surface, text_option.font_rect)
                     if self.mouse_obj.clicked:
                         self.game_state['Game'] = True
                         self.game_state['Game_over'] = False
@@ -112,6 +118,8 @@ class Game():
                         self.player_obj.reset()
                         self.mouse_obj.clicked = False
                         continue
+                
+                self.mouse_obj.render()
                 
                 if self.fade_obj.fade_alpha >= 0:
                     self.fade_obj.fade_out(10, dt)
@@ -131,8 +139,6 @@ class Game():
                         self.player_obj.ground = False
                 if event.type == pyg.MOUSEBUTTONDOWN:
                     self.mouse_obj.clicked = True
-            
-            self.mouse_obj.render(self.game_state['Game_over'])
             
             # screen / clock / display || updates
             self.screen.blit(pyg.transform.scale(self.display, self.screen.get_size()), (0, 0))
