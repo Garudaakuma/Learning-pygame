@@ -15,7 +15,13 @@ class Player():
         
         self.ground = True
         self.gravity = 0
-        
+    
+    def reset(self):
+        self.pos = pyg.Vector2(32, self.display.get_height()-32)
+        self.rect = self.util.get_rect(self.surface, self.pos)
+        self.ground = True
+        self.gravity = 0
+    
     def physics_update(self, dt):
         self.gravity += 1 * dt
         self.rect.y += min(10, self.gravity + 0.1) * dt

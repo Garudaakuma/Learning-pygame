@@ -53,3 +53,21 @@ class text_fonts():
         
     def draw_rect(self, color: str, size:int):
         return pyg.draw.rect(self.display, color, self.font_rect, border_radius=size)
+    
+class Mouse():
+    def __init__(self, display: pyg.Surface) -> None:
+        self.display = display
+        self.pos = pyg.mouse.get_pos()
+        self.surface = utility(display).image_load('IMAGE','cursor.png')
+        self.rect = self.surface.get_rect(center=(self.pos[0], self.pos[1]))
+        self.mask = pyg.mask.from_surface(self.surface)
+        self.clicked = False
+        
+    def update(self):
+        self.pos = pyg.mouse.get_pos()
+        self.pos = (self.pos[0]/2, self.pos[1]/2)
+        self.rect.center = (self.pos[0], self.pos[1])
+        
+    def render(self, gamestate):
+        if gamestate: self.display.blit(self.surface, self.rect)
+        
