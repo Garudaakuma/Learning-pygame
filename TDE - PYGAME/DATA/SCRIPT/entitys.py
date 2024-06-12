@@ -21,7 +21,8 @@ class Enemy():
     def walk_cicle(self, speed:int, dt:float):
         self.display.blit(self.img, self.rect)
         self.rect.x -= speed * dt
-        if self.rect.x <= -32: self.rect.x = self.display.get_width()+32
+        if self.rect.x <= -32: 
+            self.rect.x = self.display.get_width()+32
         
     def colligion_check(self, player_rect) -> bool:
         return self.rect.colliderect(player_rect)

@@ -29,12 +29,14 @@ class Game():
         self.util = util_.utility(self.display)
         
         self.sky_surface = self.util.image_load('IMAGE','sky_background.png')
+        self.sky_rect = self.sky_surface.get_rect(midbottom=(self.display.get_width()/2,self.display.get_height()+65))
         self.ground_surface = self.util.image_load('IMAGE','floor_grass.png')
 
         self.fade_obj = util_.transition_image(self.display)
 
         self.score = 0
-
+        self.speed = 2
+        
         self.snail_obj = enti_.Enemy(self.display, 'snail')
         
         self.player_obj = play_.Player(self.display)
@@ -54,7 +56,7 @@ class Game():
                 self.display.fill(self.BACKGROUND_COLOR)
 
                 # render
-                self.display.blit(self.sky_surface, (0,65))
+                self.display.blit(self.sky_surface, self.sky_rect)
                 self.display.blit(self.ground_surface, (0,self.display.get_height()-32))
 
                 # text
@@ -68,7 +70,7 @@ class Game():
                 self.score += 0.1
                 
                 # snail walking
-                self.snail_obj.walk_cicle(1,dt)
+                self.snail_obj.walk_cicle(self.speed,dt)
                 
                 # player
                 self.display.blit(self.player_obj.surface, self.player_obj.rect)
@@ -100,7 +102,13 @@ class Game():
                 reset_button = util_.button_rect(self.display, (128, 32), (self.display.get_width()/2, self.display.get_height()/2+40), '#f92672', text_option)
                 reset_button.render()
 
+                text_exit = util_.text_fonts(self.display, 'Daydream.ttf', 20, (self.display.get_width()/2, self.display.get_height()/2+80), 'EXIT', False, '#1b1d1e')
+                exit_button = util_.button_rect(self.display, (128, 32), (self.display.get_width()/2, self.display.get_height()/2+80), '#f92672', text_exit)
+                exit_button.render()
                 
+                if exit_button.mask.overlap(self.mouse_obj.mask, (self.mouse_obj.pos[0] - exit_button.rect.x, self.mouse_obj.pos[1] - exit_button.rect.y)):
+                    exit_button.check_collision(self.mouse_obj, '#f8f8f2')
+                    if self.mouse_obj.clicked: self.end()
                 
                 if reset_button.mask.overlap(self.mouse_obj.mask, (self.mouse_obj.pos[0] - reset_button.rect.x, self.mouse_obj.pos[1] - reset_button.rect.y)):
                     reset_button.check_collision(self.mouse_obj, '#f8f8f2')
@@ -108,6 +116,7 @@ class Game():
                         self.game_state['Game'] = True
                         self.game_state['Game_over'] = False
                         self.score = 0
+                        self.speed = 2
                         self.snail_obj.reset()
                         self.player_obj.reset()
                         self.mouse_obj.clicked = False
@@ -124,11 +133,11 @@ class Game():
                     if event.key == pyg.K_ESCAPE: self.end()
                     if self.game_state['Game']:
                         if event.key == pyg.K_SPACE and self.player_obj.ground or event.key == pyg.K_w and self.player_obj.ground or event.key == pyg.K_UP and self.player_obj.ground:
-                            self.player_obj.gravity = -12
+                            self.player_obj.gravity = -14
                             self.player_obj.ground = False
                 if event.type == pyg.MOUSEBUTTONDOWN and self.player_obj.ground and self.game_state['Game']:
                     if self.player_obj.rect.collidepoint((event.pos[0]/2, event.pos[1]/2)):
-                        self.player_obj.gravity = -12
+                        self.player_obj.gravity = -14
                         self.player_obj.ground = False
                 if event.type == pyg.MOUSEBUTTONDOWN:
                     self.mouse_obj.clicked = True
