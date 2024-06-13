@@ -61,9 +61,13 @@ class Game():
                 self.display.fill(self.BACKGROUND_COLOR)
 
                 # render
+                if self.sky_rect2.x <= -(self.display.get_width()): 
+                    self.sky_rect2.x = self.display.get_width()
                 self.sky_rect2.x -= self.speed * dt
                 self.display.blit(self.sky_surface2, self.sky_rect2)
-                ... # if state
+                
+                if self.sky_rect.x <= -(self.display.get_width()): 
+                    self.sky_rect.x = self.display.get_width()
                 self.sky_rect.x -= self.speed * dt
                 self.display.blit(self.sky_surface, self.sky_rect)
 
