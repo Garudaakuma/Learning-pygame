@@ -19,6 +19,10 @@ class Game():
             'Game_over': False
         }
 
+        self.score = 0
+        self.speed = 1
+        self.speed_clock = 0
+
         pyg.init()
         pyg.display.set_caption('CapyRun')
         self.screen = pyg.display.set_mode(self.RESOLUTION)
@@ -35,11 +39,11 @@ class Game():
         self.sky_rect2 = self.sky_surface.get_rect(midbottom=(self.display.get_width() + self.display.get_width()/2,self.display.get_height()+65))
 
         self.ground_surface = self.util.image_load('IMAGE','floor_grass.png')
+        self.ground_rect = self.ground_surface.get_rect(midbottom=(self.display.get_width()/2,self.display.get_height()))
+        self.ground_surface2 = self.util.image_load('IMAGE','floor_grass.png')
+        self.ground_rect2 = self.ground_surface2.get_rect(midbottom=(self.display.get_width() + self.display.get_width()/2,self.display.get_height()))
 
         self.fade_obj = util_.transition_image(self.display)
-
-        self.score = 0
-        self.speed = 1
 
         self.snail_obj = enti_.Enemy(self.display, 'snail')
 
@@ -71,7 +75,15 @@ class Game():
                 self.sky_rect.x -= self.speed * dt
                 self.display.blit(self.sky_surface, self.sky_rect)
 
-                self.display.blit(self.ground_surface, (0,self.display.get_height()-32))
+                if self.ground_rect2.x <= -self.display.get_width():
+                    self.ground_rect2.x = self.display.get_width()
+                self.ground_rect2.x -= self.speed * dt
+                self.display.blit(self.ground_surface2, self.ground_rect2)
+
+                if self.ground_rect.x <= -self.display.get_width():
+                    self.ground_rect.x = self.display.get_width()
+                self.ground_rect.x -= self.speed * dt
+                self.display.blit(self.ground_surface, self.ground_rect)
 
                 # text
                 fps_text = util_.text_fonts(self.display, 'ConsolaMono-book.ttf', 10, (0,0), f'fps: {self.clock.get_fps()*dt:.0f}', False, '#1b1d1e')
@@ -81,7 +93,11 @@ class Game():
                 score_text.draw_rect('#f8f8f2', 5)
                 self.display.blit(score_text.font_surface, score_text.font_rect)
 
-                self.score += 0.1
+                self.score += 0.1 
+                self.speed_clock += 0.1
+                if self.speed_clock >= 100:
+                    self.speed += 1
+                    self.speed_clock = 0
 
                 # snail walking
                 self.snail_obj.walk_cicle(self.speed,dt)
