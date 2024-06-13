@@ -4,4 +4,7 @@
 # imports self labrary
 import DATA.SCRIPT.main as _m
 
-_m.Game().run()
+if __name__ == '__main__':
+    print("capyRun.py loaded!")
+    _m.Game().run()
+    pass
