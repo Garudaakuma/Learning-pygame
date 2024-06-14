@@ -65,25 +65,25 @@ class Game():
                 self.display.fill(self.BACKGROUND_COLOR)
 
                 # render
-                if self.sky_rect2.x <= -(self.display.get_width()): 
+                if self.sky_rect2.x <= -(self.display.get_width()):
                     self.sky_rect2.x = self.display.get_width()
                 self.sky_rect2.x -= self.speed * dt
-                self.display.blit(self.sky_surface2, self.sky_rect2)
-                
-                if self.sky_rect.x <= -(self.display.get_width()): 
+                self.display.blit(self.sky_surface2, (self.sky_rect2.x - (self.speed - 1) ,self.sky_rect2.y))
+
+                if self.sky_rect.x <= -(self.display.get_width()):
                     self.sky_rect.x = self.display.get_width()
                 self.sky_rect.x -= self.speed * dt
-                self.display.blit(self.sky_surface, self.sky_rect)
+                self.display.blit(self.sky_surface, (self.sky_rect.x - (self.speed - 1) ,self.sky_rect.y))
 
                 if self.ground_rect2.x <= -self.display.get_width():
                     self.ground_rect2.x = self.display.get_width()
                 self.ground_rect2.x -= self.speed * dt
-                self.display.blit(self.ground_surface2, self.ground_rect2)
+                self.display.blit(self.ground_surface2, (self.ground_rect2.x - (self.speed - 1) ,self.ground_rect2.y))
 
                 if self.ground_rect.x <= -self.display.get_width():
                     self.ground_rect.x = self.display.get_width()
                 self.ground_rect.x -= self.speed * dt
-                self.display.blit(self.ground_surface, self.ground_rect)
+                self.display.blit(self.ground_surface, (self.ground_rect.x - (self.speed - 1) ,self.ground_rect.y))
 
                 # text
                 fps_text = util_.text_fonts(self.display, 'ConsolaMono-book.ttf', 10, (0,0), f'fps: {self.clock.get_fps()*dt:.0f}', False, '#1b1d1e')
@@ -93,7 +93,7 @@ class Game():
                 score_text.draw_rect('#f8f8f2', 5)
                 self.display.blit(score_text.font_surface, score_text.font_rect)
 
-                self.score += 0.1 
+                self.score += 0.1
                 self.speed_clock += 0.1
                 if self.speed_clock >= 100:
                     self.speed += 1
