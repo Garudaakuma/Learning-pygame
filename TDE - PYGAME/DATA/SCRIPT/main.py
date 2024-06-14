@@ -6,6 +6,7 @@ import pygame as pyg, sys, time
 import DATA.SCRIPT.utilities    as util_
 import DATA.SCRIPT.entitys      as enti_
 import DATA.SCRIPT.player       as play_
+import DATA.SCRIPT.scenario     as scen_
 
 
 class Game():
@@ -37,6 +38,8 @@ class Game():
         self.sky_rect = self.sky_surface.get_rect(midbottom=(self.display.get_width()/2,self.display.get_height()+65))
         self.sky_surface2 = self.util.image_load('IMAGE','sky_background.png')
         self.sky_rect2 = self.sky_surface.get_rect(midbottom=(self.display.get_width() + self.display.get_width()/2,self.display.get_height()+65))
+
+        self.sky = self
 
         self.ground_surface = self.util.image_load('IMAGE','floor_grass.png')
         self.ground_rect = self.ground_surface.get_rect(midbottom=(self.display.get_width()/2,self.display.get_height()))
