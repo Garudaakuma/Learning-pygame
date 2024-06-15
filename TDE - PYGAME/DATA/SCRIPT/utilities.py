@@ -47,7 +47,7 @@ class transition_image():
 
 
 class text_fonts():
-    def __init__(self, display: pyg.Surface, font_ttf: str, size: int, pos: pyg.Vector2, text: str, antialias: bool, color: str):
+    def __init__(self, display: pyg.Surface, font_ttf: str, size: int, pos: tuple, text: str, antialias: bool, color: str):
         self.display = display
 
         self.font_obj = pyg.font.Font(utility(display).PATH['FONTS']+font_ttf, size)
